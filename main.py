@@ -65,7 +65,8 @@ def main():
                 print(f"{answer['answer']}")
 
 
-if wanted_function in possible_answers:
-    main()
-else:
-    print("You have to input either 1 or 2")
+if __name__ == "__main__":
+    if wanted_function in possible_answers:
+        main()
+    else:
+        print("You have to input either 1 or 2")
