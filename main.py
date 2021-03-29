@@ -1,10 +1,28 @@
 import json
+import argparse
 
-print("What function do you want to run? 1 for saving questions and answers and 2 for listing questions and answers")
+possible_arg_list = ["test", "save", "list"]
+parser = argparse.ArgumentParser(description='Process the choice.')
 
-possible_answers = ["1", "2"]
+parser.add_argument('-t', action="store_true", help="Take the test", default=False, dest="test")
+parser.add_argument('-s', action="store_true", help="Save aswers to a subject", default=False, dest="save")
+parser.add_argument('-l', action="store_true", help="List the available subjects", default=False, dest="list")
 
-wanted_function = input()
+args = parser.parse_args()
+
+
+def print_jsons() -> None:
+    """
+    prints the jsons in the main directory of project
+    """
+    from os.path import isfile, join, dirname, realpath
+    from os import listdir
+
+    mypath = dirname(realpath(__file__))
+    files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    json = [f for f in files if ".json" in f]
+    print("Below are your subject options")
+    print(json)
 
 def start_new_json(file_name):
     start = """
@@ -30,7 +48,12 @@ def append_json(file_name, new_data):
         json.dump(old_data, outfile)
 
 def main():
-    if wanted_function == "1":
+
+    if args.list == True:
+        print_jsons()
+        exit(0)
+
+    if args.save == True :
         while True:
             print("Input your question:")
             question = input()
@@ -51,7 +74,7 @@ def main():
                 json.dump(d, f)
 
 
-    if wanted_function == "2":
+    if args.test == True:
         while True:
             with open('data.json') as json_file:
                 data = json.load(json_file)
@@ -66,7 +89,4 @@ def main():
 
 
 if __name__ == "__main__":
-    if wanted_function in possible_answers:
-        main()
-    else:
-        print("You have to input either 1 or 2")
+    main()
