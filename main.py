@@ -7,9 +7,20 @@ parser = argparse.ArgumentParser(description='Process the choice.')
 parser.add_argument('-t', action="store_true", help="Take the test", default=False, dest="test")
 parser.add_argument('-s', action="store_true", help="Save aswers to a subject", default=False, dest="save")
 parser.add_argument('-l', action="store_true", help="List the available subjects", default=False, dest="list")
+parser.add_argument('-n', type=str, action="store", help="Start a new subject", default=False, dest="new")
 
 args = parser.parse_args()
 
+
+def change_text_color(color):
+    if color == "green":
+        print("\033[1;32;40m\n")
+    
+    if color == "default":
+        print("\033[1;37;40m\n")
+    
+    if color == "blue":
+        print("\033[1;34;40m\n")
 
 def print_jsons() -> None:
     """
@@ -47,7 +58,15 @@ def append_json(file_name, new_data):
     with open(file_name, 'w') as outfile:
         json.dump(old_data, outfile)
 
+
 def main():
+
+    if args.new != None:
+        file_name = args.new
+        if ".json" not in file_name:
+            file_name = file_name + ".json"
+        
+        start_new_json(file_name)
 
     if args.list == True:
         print_jsons()
@@ -80,11 +99,14 @@ def main():
                 data = json.load(json_file)
             
             for answer in data['data']:
+                change_text_color("default")
+                print("-----------------------")
                 
-
+                change_text_color("green")
                 print(f"{answer['question']}")
 
                 t = input()
+                change_text_color("blue")
                 print(f"{answer['answer']}")
 
 
