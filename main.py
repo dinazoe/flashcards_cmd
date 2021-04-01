@@ -1,11 +1,13 @@
 import json
 import argparse
+from types import new_class
 from lib import colors
 
 possible_arg_list = ["test", "save", "list"]
 parser = argparse.ArgumentParser(description='Process the choice.')
 
 parser.add_argument('-t', action="store_true", help="Take the test", default=False, dest="test")
+parser.add_argument('-json', type=str, action="store", help="The name of the json file you will be using", default="data", dest="json")
 parser.add_argument('-s', action="store_true", help="Save aswers to a subject", default=False, dest="save")
 parser.add_argument('-l', action="store_true", help="List the available subjects", default=False, dest="list")
 parser.add_argument('-n', type=str, action="store", help="Start a new subject", default=False, dest="new")
@@ -63,6 +65,15 @@ def main():
         exit(0)
 
     if args.save == True :
+
+        json_name = args.json
+        
+        if len(args.json) > 0:
+            if ".json" not in args.json:
+                json_name = args.json + ".json"
+            else:
+                json_name = args.json
+
         while True:
             print("Input your question:")
             question = input()
@@ -74,7 +85,7 @@ def main():
                 'answer': answer
             }
 
-            with open('data.json') as json_file:
+            with open(json_name) as json_file:
                 d = json.load(json_file)
 
             d['data'].append(data)
@@ -84,8 +95,17 @@ def main():
 
 
     if args.test == True:
+
+        json_name = args.json
+        
+        if len(args.json) > 0:
+            if ".json" not in args.json:
+                json_name = args.json + ".json"
+            else:
+                json_name = args.json
+        
         while True:
-            with open('data.json') as json_file:
+            with open(json_name) as json_file:
                 data = json.load(json_file)
             
             for answer in data['data']:
