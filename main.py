@@ -1,4 +1,4 @@
-import json
+parser.add_argument('-n', type=str, action="store", help="Start a new subject", default=False, dest="new")import json
 import argparse
 from types import new_class
 from lib import colors
@@ -11,6 +11,7 @@ parser.add_argument('-json', type=str, action="store", help="The name of the jso
 parser.add_argument('-s', action="store_true", help="Save aswers to a subject", default=False, dest="save")
 parser.add_argument('-l', action="store_true", help="List the available subjects", default=False, dest="list")
 parser.add_argument('-n', type=str, action="store", help="Start a new subject", default=False, dest="new")
+parser.add_argument('-h', type=str, action="store", help="Start helper", default=False, dest="helper")
 
 args = parser.parse_args()
 
